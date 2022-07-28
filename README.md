@@ -21,4 +21,4 @@ THIS IS A NEW VERSION OF MY PYTHON PROGRAM, RE-MADE IN JAVA. WORK IN PROGRESS...
 
   **This is important, as this program processes decklists with a specific formatting, which the comments can throw off.**
   
-  After you have your decklist, you can drag and drop it onto the "**EDHBasicLandCalculator.py**" file. Then, the file will automatically get processed, and the best distribution of lands (according to the formula) will be printed out along with the number of basic lands you'll need and the number of symbols for each color.
+  ** WILL UPDATE THIS ONCE PROJECT IS FINISHED **
