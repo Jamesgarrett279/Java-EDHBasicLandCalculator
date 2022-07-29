@@ -20,15 +20,18 @@ public class ManaCollector {
 	private double wSymbol, uSymbol, bSymbol, rSymbol, gSymbol = 0.0;
 	private int plains, islands, swamps, mountains, forests = 0;
 	private int totalSymbols = 0;
-	private int responseCode;
 	private boolean specialCard;
 	private ArrayList<String> missingCards = new ArrayList<String>();
 	private HashMap<String, Integer> foundSymbols = new HashMap<String, Integer>();
 	private Scanner scanner;
 	private StringBuilder returnedString;
 	private String cardName;
-	private URL url;
-	private HttpURLConnection conn;
+	private RestApi connection = new RestApi();
+	
+	ManaCollector(String cardName){
+		this.cardName = cardName;
+		
+	}
 	
 	// List of the "generic mana" symbols that don't need to be counted
 	private ArrayList<String> genericSymbols = new ArrayList<String>() {
@@ -66,23 +69,6 @@ public class ManaCollector {
 			add("{G}");
 		}
 	};
-	
-	ManaCollector(String cardName){
-		this.cardName = cardName;
-		
-	}
-	
-	private void attemptConnection() {
-		String fullUrl = "https://api.scryfall.com/cards/named?exact=" + cardName;
-		
-		try {
-			url = new URL(fullUrl);
-		} 
-		
-		catch(MalformedURLException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	// Processes the found symbols
 	private void processMana(HashMap<String, Integer> symbols) {
@@ -319,34 +305,11 @@ public class ManaCollector {
 	
 	public void collector() {
 		JSONArray cardInfo;
+		int responseCode;
 		
-		attemptConnection();
-		
-		// Setting up the connection
-		try {
-			conn = (HttpURLConnection) url.openConnection();
-		}
-		
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			conn.setRequestMethod("GET");
-		}
-		
-		catch(ProtocolException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			conn.connect();
-			responseCode = conn.getResponseCode();
-		}
-		
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+		connection.setCardName(cardName);
+		connection.startSearch();
+		responseCode = connection.getResponseCode();
 		
 		// WE NEED TO EDIT THIS TO SAVE THE NAMES OF ANY MISSING CARDS AND LET THE USER KNOW
 		if (responseCode == 404) {
@@ -362,7 +325,7 @@ public class ManaCollector {
 			returnedString = new StringBuilder();
 			
 			try {
-				scanner = new Scanner(url.openStream());
+				scanner = new Scanner(connection.getUrl().openStream());
 			}
 			
 			catch (IOException e) {
@@ -398,33 +361,13 @@ public class ManaCollector {
 			}
 			
 			if (specialCard == true) {
-				
+				specialCard(jsonCard);
 			}
 			
 			else {
-				
+				normalCard(jsonCard);
 			}
 			
-			//System.out.println(jsonCard);
-			//String test =  jsonCard.get("oracle_text").toString();
-			JSONArray faces = (JSONArray) jsonCard.get("card_faces");
-			JSONObject f1 = (JSONObject) faces.get(0);
-			System.out.println(f1.get("oracle_text"));
-			
-			
-			//String [] tesr = faces.get(0).toString().replace("\",\"", "\" , \"").split(" , ");
-			//System.out.println(tesr);
-			
-			
-			//System.out.println(jsonCard.get("card_faces"));
-			//System.out.println(jsonCard.get("mana_cost").toString());
-			
-			
-			
-			/*for (String a : tesr) {
-				System.out.println(a);
-			}*/
 		}
 	}
 }
-;
