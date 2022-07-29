@@ -7,6 +7,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
@@ -16,8 +17,9 @@ import org.json.simple.parser.ParseException;
 
 public class ManaCollector {
 	
-	private int wSymbol, uSymbol, bSymbol, rSymbol, gSymbol = 0;
+	private double wSymbol, uSymbol, bSymbol, rSymbol, gSymbol = 0.0;
 	private int plains, islands, swamps, mountains, forests = 0;
+	private int totalSymbols = 0;
 	private int responseCode;
 	private boolean specialCard;
 	private ArrayList<String> missingCards = new ArrayList<String>();
@@ -54,6 +56,17 @@ public class ManaCollector {
 		}
 	};
 	
+	// List of the colors for symbols
+	private ArrayList<String> colorSymbols = new ArrayList<String>() {
+		{
+			add("{W}");
+			add("{U}");
+			add("{R}");
+			add("{B}");
+			add("{G}");
+		}
+	};
+	
 	ManaCollector(String cardName){
 		this.cardName = cardName;
 		
@@ -71,9 +84,157 @@ public class ManaCollector {
 		}
 	}
 	
-	private void processMana(ArrayList<String> symbols) {
-		for (int i = 0; i < symbols.size(); i++) {
+	// Processes the found symbols
+	private void processMana(HashMap<String, Integer> symbols) {
+		for (Map.Entry<String, Integer> currentSet : symbols.entrySet()) {
+			String currentSymbol = currentSet.getKey();
+			int symbolAmount = currentSet.getValue();
 			
+			// Checks for Phyrexian mana
+			if (currentSymbol.contains("P")) {
+				switch (currentSymbol) {
+					case "{W/P}":
+						wSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{U/P}":
+						uSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{B/P}":
+						bSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{R/P}":
+						rSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{G/P}":
+						gSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					default:
+						break;
+				}
+			}
+			
+			// Checks for 2 generic mana
+			else if (currentSymbol.contains("2")) {
+				switch(currentSymbol) {
+					case "{2/W}":
+						wSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{2/U}":
+						uSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{2/B}":
+						bSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{2/R}":
+						rSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{2/G}":
+						gSymbol += symbolAmount;
+						totalSymbols += symbolAmount;
+						break;
+					default:
+						break;
+				}
+			}
+			
+			// Checks for hybrid
+			else if (currentSymbol.contains("/")) {
+				double splitAmount = (symbolAmount * 0.5);
+				
+				switch(currentSymbol) {
+					case "{W/U}":
+						wSymbol += splitAmount;
+						uSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{W/B}":
+						wSymbol += splitAmount;
+						bSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{B/R}":
+						bSymbol += splitAmount;
+						rSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{B/G}":
+						bSymbol += splitAmount;
+						gSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{U/B}":
+						uSymbol += splitAmount;
+						bSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{U/R}":
+						uSymbol += splitAmount;
+						rSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{R/G}":
+						rSymbol += splitAmount;
+						gSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{R/W}":
+						rSymbol += splitAmount;
+						wSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{G/W}":
+						gSymbol += splitAmount;
+						wSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					case "{G/U}":
+						gSymbol += splitAmount;
+						uSymbol += splitAmount;
+						totalSymbols += symbolAmount;
+						break;
+					default:
+						break;
+				}
+			}
+			
+			else {
+				// Ensure that the symbol is actually a symbol
+				if (colorSymbols.contains(currentSymbol)) {
+					switch(currentSymbol) {
+						case "{W}":
+							wSymbol += symbolAmount;
+							totalSymbols += symbolAmount;
+							break;
+						case "{U}":
+							uSymbol += symbolAmount;
+							totalSymbols += symbolAmount;
+							break;
+						case "{B}":
+							bSymbol += symbolAmount;
+							totalSymbols += symbolAmount;
+							break;
+						case "{R}":
+							rSymbol += symbolAmount;
+							totalSymbols += symbolAmount;
+							break;
+						case "{G}":
+							gSymbol += symbolAmount;
+							totalSymbols += symbolAmount;
+							break;
+						default:
+							break;
+					}
+				}
+			}			
 		}
 	}
 	
