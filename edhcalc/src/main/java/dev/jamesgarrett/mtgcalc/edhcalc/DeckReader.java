@@ -47,6 +47,8 @@ public class DeckReader {
 			String cardName = ourScanner.nextLine();
 			specialCard = false;
 			
+			
+			
 			System.out.println(cardAmount);
 			System.out.println(cardName);
 			
