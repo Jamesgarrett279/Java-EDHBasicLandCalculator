@@ -8,10 +8,10 @@ import java.util.Scanner;
 public class DeckReader {
 
 	private int cardCount, symbolCount = 0;
-	private boolean specialCard;
 	private ArrayList<String> deck = new ArrayList<String>();
 	private File ourFile;
 	private Scanner ourScanner;
+	private ManaCollector collector = new ManaCollector();
 	
 	DeckReader(String fileName){
 		ourFile = new File(fileName);
@@ -45,12 +45,16 @@ public class DeckReader {
 		while(ourScanner.hasNext()) {
 			int cardAmount = ourScanner.nextInt();
 			String cardName = ourScanner.nextLine();
-			specialCard = false;
-			
-			
 			
 			System.out.println(cardAmount);
 			System.out.println(cardName);
+			
+			collector.setCardName(cardName);
+			collector.setCardAmount(cardAmount);
+			
+			
+			
+			
 			
 			/*if (cardName.equals("main") || cardName.equals("")) {
 				continue;
@@ -58,5 +62,7 @@ public class DeckReader {
 			
 			// MAKE SURE TO GET THE MISSING CARDS AND TAKE THOSE INTO ACCOUNT
 		}
+		
+		System.out.println("Missing cards: " + collector.getMissingCards());
 	}
 }

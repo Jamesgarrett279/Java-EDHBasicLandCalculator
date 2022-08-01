@@ -20,6 +20,7 @@ public class ManaCollector {
 	private double wSymbol, uSymbol, bSymbol, rSymbol, gSymbol = 0.0;
 	private int plains, islands, swamps, mountains, forests = 0;
 	private int totalSymbols = 0;
+	private int cardAmount;
 	private boolean specialCard;
 	private ArrayList<String> missingCards = new ArrayList<String>();
 	private HashMap<String, Integer> foundSymbols = new HashMap<String, Integer>();
@@ -28,8 +29,7 @@ public class ManaCollector {
 	private String cardName;
 	private RestApi connection = new RestApi();
 	
-	ManaCollector(String cardName){
-		this.cardName = cardName;
+	ManaCollector(){
 		
 	}
 	
@@ -246,11 +246,11 @@ public class ManaCollector {
 				if (foundSymbols.containsKey(splitSymbols[0])) {
 					int temp = foundSymbols.get(splitSymbols[0]);
 					
-					foundSymbols.replace(splitSymbols[0], temp++);
+					foundSymbols.replace(splitSymbols[0], (temp + cardAmount));
 				}
 				
 				else {
-					foundSymbols.put(splitSymbols[0], 1);
+					foundSymbols.put(splitSymbols[0], cardAmount);
 				}
 			}
 		}
@@ -270,11 +270,11 @@ public class ManaCollector {
 					if (foundSymbols.containsKey(currentSymbol)) {
 						int temp = foundSymbols.get(currentSymbol);
 						
-						foundSymbols.replace(currentSymbol, temp++);
+						foundSymbols.replace(currentSymbol, (temp + cardAmount));
 					}
 					
 					else {
-						foundSymbols.put(currentSymbol, 1);
+						foundSymbols.put(currentSymbol, cardAmount);
 					}
 				}
 			}
@@ -295,12 +295,16 @@ public class ManaCollector {
 		normalCard(back);
 	}
 	
-	public String getCardName() {
-		return cardName;
-	}
-	
 	public void setCardName(String cardName) {
 		this.cardName = cardName;
+	}
+	
+	public void setCardAmount(int cardAmount) {
+		this.cardAmount = cardAmount;
+	}
+	
+	public ArrayList<String> getMissingCards() {
+		return missingCards;
 	}
 	
 	public void collector() {
