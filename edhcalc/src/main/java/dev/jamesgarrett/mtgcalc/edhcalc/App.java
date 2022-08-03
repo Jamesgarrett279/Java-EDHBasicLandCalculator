@@ -13,8 +13,8 @@ public class App {
     	
     	// This is a double-faced card search:   "Wandering+Archaic+//+Explore+the+Vastlands"
     	
-    	ManaCollector mana = new ManaCollector();
-    	mana.collector();
+    	//ManaCollector mana = new ManaCollector();
+    	//mana.collector();
     	
     	do {
     		System.out.print("Enter the filename: ");

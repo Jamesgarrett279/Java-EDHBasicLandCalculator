@@ -18,7 +18,6 @@ import org.json.simple.parser.ParseException;
 public class ManaCollector {
 	
 	private double wSymbol, uSymbol, bSymbol, rSymbol, gSymbol = 0.0;
-	private int plains, islands, swamps, mountains, forests = 0;
 	private int totalSymbols = 0;
 	private int cardAmount;
 	private boolean specialCard;
@@ -279,10 +278,6 @@ public class ManaCollector {
 				}
 			}
 		}
-		
-		// # This mana is generic, colorless, or snow, which we will assume the deck can pay for through other cards 
-		
-		
 	}
 	
 	// Uses the "normalCard" method to process both sides
@@ -307,6 +302,26 @@ public class ManaCollector {
 		return missingCards;
 	}
 	
+	public HashMap<String, Double> getSymbols(){
+		processMana(foundSymbols);
+		
+		HashMap<String, Double> finalSymbols = new HashMap<String, Double>(){
+			{
+				put("wSymbol", wSymbol);
+				put("uSymbol", uSymbol);
+				put("bSymbol", bSymbol);
+				put("rSymbol", rSymbol);
+				put("gSymbol", gSymbol);
+			}
+		};
+		
+		return finalSymbols;
+	}
+	
+	public int getTotalSymbols() {
+		return totalSymbols;
+	}
+	
 	public void collector() {
 		JSONArray cardInfo;
 		int responseCode;
@@ -314,6 +329,15 @@ public class ManaCollector {
 		connection.setCardName(cardName);
 		connection.startSearch();
 		responseCode = connection.getResponseCode();
+		
+		// WE NEED TO ADD A DELAY TO THIS SO THAT THE API DOESN'T BAN US
+		try {
+			Thread.sleep(500);
+		} 
+		
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		// WE NEED TO EDIT THIS TO SAVE THE NAMES OF ANY MISSING CARDS AND LET THE USER KNOW
 		if (responseCode == 404) {
@@ -371,7 +395,6 @@ public class ManaCollector {
 			else {
 				normalCard(jsonCard);
 			}
-			
 		}
 	}
 }
