@@ -35,7 +35,7 @@ public class DeckReader {
 		}
 	}
 	
-	public void welcomeText() {
+	private void welcomeText() {
 		System.out.println("|***************************************|");
 		System.out.println("|---------------------------------------|");
 		System.out.println("|\tEDH BASIC LAND CALCULATOR\t|");
@@ -103,7 +103,7 @@ public class DeckReader {
 
 	private void startProcessing() {	
 		int counter = 0;
-		System.out.print("\nProcessing your deck..");
+		System.out.print("\nProcessing your deck...");
 		
 		while(ourScanner.hasNext()) {
 			int cardAmount = ourScanner.nextInt();
