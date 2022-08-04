@@ -282,6 +282,7 @@ public class ManaCollector {
 	
 	// Uses the "normalCard" method to process both sides
 	private void specialCard(JSONObject card) {
+		specialCard = false;
 		JSONArray cardFaces = (JSONArray) card.get("card_faces");
 		JSONObject front = (JSONObject) cardFaces.get(0);
 		JSONObject back = (JSONObject) cardFaces.get(1);
