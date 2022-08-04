@@ -8,26 +8,43 @@ public class App {
     public static void main(String[] args) {
     	
     	boolean isValid = false;
+    	boolean runAgain = true;
     	String fileName = "";
+    	String userResponse = "";
     	Scanner sc = new Scanner(System.in);
-    	
-    	// This is a double-faced card search:   "Wandering+Archaic+//+Explore+the+Vastlands"
-    	
-    	//ManaCollector mana = new ManaCollector();
-    	//mana.collector();
-    	
+
     	do {
-    		System.out.print("Enter the filename: ");
-    		fileName = sc.nextLine();
+        	do {
+        		System.out.print("Enter the filename: ");
+        		fileName = sc.nextLine();
+        		
+        		if (new File(fileName).isFile() == true) {
+        			isValid = true;
+        		}
+        		
+        	} while (isValid == false);
+        	
+        	DeckReader newDeck = new DeckReader(fileName);
+        	System.out.println("--------------------------------------------------------");
+        	
+        	// Allows checking of multiple deck lists
+        	do {
+        		System.out.print("\n\nWould you like to process another deck list? "
+        				+ "(\"yes\" or \"no\"): ");
+        		userResponse = sc.nextLine().toLowerCase();
+        		
+        	} while (!(userResponse.equals("yes") || userResponse.equals("no")));
+        	
+        	if (userResponse.equals("no")) {
+        		runAgain = false;
+        	}
+        	
+        	else {
+        		System.out.println("\n");
+        	}
     		
-    		if (new File(fileName).isFile() == true) {
-    			isValid = true;
-    		}
-    		
-    	} while (isValid == false);
+    	} while (runAgain == true);
+    	
     	sc.close();
-    	
-    	
-    	DeckReader newDeck = new DeckReader(fileName);
     }
 }
