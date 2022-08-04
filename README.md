@@ -5,9 +5,6 @@ THIS IS A NEW VERSION OF MY PYTHON PROGRAM, RE-MADE IN JAVA. WORK IN PROGRESS...
  This program will process certain MTG decklists and automatically calculate the best ratio for your basic lands.
  
  Currently, this program is meant for EDH / 100 card decks lists, however I plan on adding support for different deck sizes / formats in the future.
-
-# Libraries
- The only external library that currently needs to be installed is the "requests" module.
  
  # How this works
   First off, you will need to create a decklist on "deckstats.net". 
