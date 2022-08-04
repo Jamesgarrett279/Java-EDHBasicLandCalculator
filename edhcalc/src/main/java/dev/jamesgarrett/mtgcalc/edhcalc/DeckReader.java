@@ -87,7 +87,7 @@ public class DeckReader {
 	private void printResults() {
 		DecimalFormat df = new DecimalFormat("###.####");
 		
-		System.out.println("Missing cards: " + collector.getMissingCards());
+		System.out.println("\nMissing cards: " + collector.getMissingCards());
 		System.out.println("Your total basic land count is: " + (100 - cardCount) + "\n");
 		System.out.println("The number of plains you should have: " 
 				+ df.format(plains) + " || " + wSymbol + " white symbols");
@@ -103,11 +103,12 @@ public class DeckReader {
 
 	private void startProcessing() {	
 		int counter = 0;
-		System.out.println("Processing your deck..");
+		System.out.print("\nProcessing your deck..");
 		
 		while(ourScanner.hasNext()) {
 			int cardAmount = ourScanner.nextInt();
 			String cardName = ourScanner.nextLine();
+			cardName = cardName.replace(' ', '+');
 			counter++;
 			
 			cardCount += cardAmount;
@@ -120,5 +121,7 @@ public class DeckReader {
 				System.out.print(".");
 			}
 		}
+		
+		System.out.println(" Completed. \n\nPrinting out results...");
 	}
 }
